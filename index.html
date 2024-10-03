@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Green Eagle Jersey Shop</title>
+    
+    <!-- Internal CSS -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        header {
+            text-align: center;
+            background-color: #333;
+            color: rgb(4, 241, 16);
+            padding: 1rem;
+            text-decoration: rgb(4, 241, 16);
+        }
+
+        .products {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 20px;
+        }
+        .product {
+            flex: 1 1 calc(33.33% - 40px);
+            border: 1px solid #ddd;
+            padding: 1rem;
+            text-align: center;
+            box-sizing: border-box;
+            min-width: 200px;
+        }
+
+        .product img {
+            width: 100%;
+            height: auto;
+        }
+
+        .cart {
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        button {
+            padding: 0.5rem;
+            background-color: rgb(4, 241, 16);
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .remove-button {
+            background-color: red;
+            margin-left: 10px;
+        }
+
+        .cart-items {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .cart-items li {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .contact-section {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.contact-section button {
+    padding: 10px 20px;
+    background-color: #ff7200;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+.logout {
+            float: right;
+            margin: 10px;
+        }
+
+.contact-section button:hover {
+    background-color: darkblue;
+}
+
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <h1>Green Eagle Jersey Shop</h1>
+        <button class="logout" onclick="logout()">Logout</button>
+    </header>
+ <!-- Product List -->
+ <div class="products">
+    <div class="product">
+        <img src="jersey1.jpg" alt="MAN CITY HOME KIT">
+        <p>Price: Ksh.850</p>
+        <label for="size1">Choose size:</label>
+        <select id="size1">
+            <option value="Small">Small</option>
+            <option value="Medium">Medium</option>
+            <option value="Large">Large</option>
+        </select>
+        <button onclick="addToCart('MAN CITY HOME KIT', 850, document.getElementById('size1').value)">Add to Cart</button>
+    </div>
+    <div class="product">
+        <img src="jersey2.jpg" alt="MAN UNITED HOME KIT">
+        <p>Price: Ksh.930</p>
+        <label for="size2">Choose size:</label>
+        <select id="size2">
+            <option value="Small">Small</option>
+            <option value="Medium">Medium</option>
+            <option value="Large">Large</option>
+        </select>
+        <button onclick="addToCart('MAN UNITED HOME KIT', 930, document.getElementById('size2').value)">Add to Cart</button>
+    </div>
+    <!-- Add more products as needed -->
+    <div class="product">
+        <img src="jersey3.jpg" alt="LIVERPOOL HOME KIT">
+        <p>Price: Ksh.950</p>
+        <label for="size3">Choose size:</label>
+        <select id="size3">
+            <option value="Small">Small</option>
+            <option value="Medium">Medium</option>
+            <option value="Large">Large</option>
+        </select>
+        <button onclick="addToCart('LIVERPOOL HOME KIT', 950, document.getElementById('size3').value)">Add to Cart</button>
+    </div>
+    <div class="product">
+        <img src="jersey4.jpg" alt="ARSENAL AWAY KIT">
+        <p>Price: Ksh.1000</p>
+        <label for="size4">Choose size:</label>
+        <select id="size4">
+            <option value="Small">Small</option>
+            <option value="Medium">Medium</option>
+            <option value="Large">Large</option>
+        </select>
+        <button onclick="addToCart('ARSENAL AWAY KIT', 1000, document.getElementById('size4').value)">Add to Cart</button>
+    </div>
+    <div class="product">
+        <img src="jersey5.jpg" alt="GIRONA THIRD KIT">
+        <p>Price: Ksh.850</p>
+        <label for="size5">Choose size:</label>
+        <select id="size5">
+            <option value="Small">Small</option>
+            <option value="Medium">Medium</option>
+            <option value="Large">Large</option>
+        </select>
+        <button onclick="addToCart('GIRONA THIRD KIT', 850, document.getElementById('size5').value)">Add to Cart</button>
+    </div>
+    <div class="product">
+        <img src="jersey6.jpg" alt="REAL MADRID HOME KIT">
+        <p>Price: Ksh.1000</p>
+        <label for="size6">Choose size:</label>
+        <select id="size6">
+            <option value="Small">Small</option>
+            <option value="Medium">Medium</option>
+            <option value="Large">Large</option>
+        </select>
+        <button onclick="addToCart('REAL MADRID HOME KIT', 1000, document.getElementById('size6').value)">Add to Cart</button>
+    </div>
+</div>
+
+ <!-- Cart -->
+ <div class="cart">
+    <h2>Your Cart</h2>
+    <ul class="cart-items" id="cart-items"></ul>
+    <p>Total: Ksh<span id="total">0</span></p>
+</div>
+<div class="contact-section">
+    <button onclick="window.location.href='contact.html'">Contact Us for More Enquiries</button>
+</div>
+<!-- Payment Section -->
+<div class="payment">
+    <h2>Proceed to Payment</h2>
+    <button onclick="processPayment()">Pay with Mpesa/Airtel Money</button>
+</div>
+
+<!-- Internal JavaScript -->
+<script>
+    let cart = [];
+    let totalCost = 0;
+
+    // Function to add items to the cart with size
+    function addToCart(name, price, size) {
+        const item = { name, price, size };
+        cart.push(item);
+        updateCart();
+    }
+// Function to remove items from the cart
+function removeFromCart(index) {
+            totalCost -= cart[index].price; // Decrease the total cost by the price of the item
+            cart.splice(index, 1); // Remove the item from the cart array
+            updateCart();
+        }
+
+        // Function to update the cart display
+        function updateCart() {
+            const cartItemsElement = document.getElementById("cart-items");
+            cartItemsElement.innerHTML = ''; // Clear current cart display
+
+            totalCost = 0; // Reset total before recalculating
+            cart.forEach((item, index) => {
+                totalCost += item.price;
+
+                const li = document.createElement('li');
+                li.innerHTML = `${item.name} (${item.size}) - $${item.price} 
+                                <button class="remove-button" onclick="removeFromCart(${index})">Remove</button>`;
+                cartItemsElement.appendChild(li);
+            });
+
+            document.getElementById("total").innerText = totalCost; // Update the total display
+        }
+
+ // Function to simulate payment process
+ function processPayment() {
+            alert("Redirecting to Mpesa/Airtel Money payment...");
+            // Call backend API for payment processing here
+        }
+         // Check if the user is logged in
+         if (localStorage.getItem('loggedIn') !== 'true') {
+            alert('Please log in to continue.');
+            window.location.href = 'login.html'; // Redirect to login if not logged in
+        }
+
+        // Logout function
+        function logout() {
+            localStorage.setItem('loggedIn', 'false'); // Mark user as logged out
+            alert('You have been logged out.');
+            window.location.href = 'login.html';
+        }
+
+    </script>
+</body>
+</html>
